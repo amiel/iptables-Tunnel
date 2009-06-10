@@ -6,19 +6,15 @@ h3. Example
 
 Assuming a HAProxy configuration with this in the listen section (10.0.1.3 is the local host):
 
-<pre><code>
-server webA 10.0.1.3:5000 check port 5500 inter 2s
+<pre><code>server webA 10.0.1.3:5000 check port 5500 inter 2s
 server webB 10.0.1.3:5001 check port 5501 inter 2s
-
-server bkpA 10.0.1.3:5000 cookie A check port 5000 inter 2s backup
-server bkpB 10.0.1.3:5001 cookie B check port 5001 inter 2s backup
 </code></pre>
 
 Then a call like this will hook HAProxy (using ports 5001 and 5501) up to that host:
 
 <pre><code>iptables_tunnel.sh add 1 10.0.1.5:3000</code></pre>
 
-NOTE: the reason for the backup servers is to allow connections to continue to use a server until HAProxy sees that it is unavailable. (see discussion here: http://www.igvita.com/2008/12/02/zero-downtime-restarts-with-haproxy/)
+NOTE: the reason for the seperate ports is to allow connections to continue to use a server until HAProxy sees that it is unavailable. (see discussion here: http://www.igvita.com/2008/12/02/zero-downtime-restarts-with-haproxy/)
 
 h3. WHY?
 
