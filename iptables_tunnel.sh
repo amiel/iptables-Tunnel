@@ -2,7 +2,6 @@
 
 IPTABLES="/sbin/iptables"
 
-DESTINATION_PORT=3500
 
 source functions.sh
 
@@ -14,9 +13,9 @@ get_port() {
 }
 
 add_server() {
-	local ip=${1:?please supply a server} port=${2:?please supply a port}
+	local ip=${1:?please supply a server} port=${2:?please supply a port} destination_port=${3:?please supply a destination port}
 	ebegin "setting up local $port to forward to $ip:$DESTINATION_PORT"
-	$IPTABLES -t nat -A OUTPUT -p tcp --dport $port -j DNAT --to-destination $ip:$DESTINATION_PORT
+	$IPTABLES -t nat -A OUTPUT -p tcp --dport $port -j DNAT --to-destination $ip
 	eend $?
 }
 
@@ -24,7 +23,7 @@ add_server() {
 remove_server() {
 	local ip=${1:?please supply a server} port=${2:?please supply a port}
 	ebegin "removing local $port forward to $ip:$DESTINATION_PORT"
-	$IPTABLES -t nat -D OUTPUT -p tcp --dport $port -j DNAT --to-destination $ip:$DESTINATION_PORT
+	$IPTABLES -t nat -D OUTPUT -p tcp --dport $port -j DNAT --to-destination $ip
 	eend $?
 }
 
