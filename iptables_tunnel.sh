@@ -13,7 +13,7 @@ get_port() {
 }
 
 add_server() {
-	local ip=${1:?please supply a server} port=${2:?please supply a port} destination_port=${3:?please supply a destination port}
+	local ip=${1:?please supply a server} port=${2:?please supply a port}
 	ebegin "setting up local $port to forward to $ip:$DESTINATION_PORT"
 	$IPTABLES -t nat -A OUTPUT -p tcp --dport $port -j DNAT --to-destination $ip
 	eend $?
